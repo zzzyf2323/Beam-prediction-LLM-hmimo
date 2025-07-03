@@ -11,7 +11,7 @@
 
 
 
-Y. Sheng, K. Huang, L. Liang, P. Liu, S. Jin, and G. Y. Li, "[Beam prediction based on large language models][link2letter]," IEEE Wireless Communications Letters, early access, 2025.
+Y. Sheng, K. Huang, L. Liang, P. Liu, S. Jin, and G. Y. Li, "[Beam prediction based on large language models][link2letter]," IEEE Wireless Communications Letters, vol. 14, no. 5, pp. 1406-1410, May 2025.
 
 
 ## Introduction
@@ -82,5 +82,9 @@ Our implementation adapts [OFA (GPT4TS)](https://github.com/DAMO-DI-ML/NeurIPS20
   author={Sheng, Yucheng and Huang, Kai and Liang, Le and Liu, Peng and Jin, Shi and Li, Geoffrey Ye},
   journal={IEEE Wireless Communications Letters},
   year={2025}
+  month={May}
+  volume={14}
+  number={5}
+  pages={1406-1410}
 }
 ```
