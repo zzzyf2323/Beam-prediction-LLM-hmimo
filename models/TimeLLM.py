@@ -387,7 +387,7 @@ class Model(nn.Module):
     def phi_norm(self,x_enc):
 
         x_enc=x_enc[:,:,-1].unsqueeze(2)
-        means = x_enc.mean(2, keepdim=True).detach()
+        means = x_enc.mean(1, keepdim=True).detach()
         x_enc = x_enc - means
         stdev = torch.sqrt(torch.var(x_enc, dim=2, keepdim=True, unbiased=False) + 1e-5)
         x_enc /= stdev
