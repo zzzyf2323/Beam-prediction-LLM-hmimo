@@ -1,6 +1,11 @@
-# Configs directory (Stage 0 scaffold)
+# Configs directory
 
-This directory is reserved for reproducible HMIMO experiment configurations.
+This folder stores reproducible HMIMO experiment configurations.
 
-- Future stages should store YAML/JSON configs here.
-- Each runnable experiment should be reproducible by config + seed.
+## Current HMIMO configs
+- `hmimo_static_small.yaml`: static Monte Carlo benchmark.
+- `hmimo_dynamic_small.yaml`: dynamic non-LLM temporal baseline benchmark.
+- `hmimo_dynamic_llm_small.yaml`: dynamic LLM-prior benchmark.
+- `hmimo_dynamic_llm_ablation_small.yaml`: dynamic LLM-prior ablation benchmark.
+
+All benchmark runs are intended to be reproducible by config + seed.

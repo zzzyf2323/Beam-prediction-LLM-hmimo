@@ -1,4 +1,5 @@
-"""Temporal prior namespace for HMIMO.
+"""Temporal prior namespace for HMIMO."""
 
-Optional LLM-assisted prior logic is deferred.
-"""
+from .temporal_prior import temporal_warm_start_from_prev
+
+__all__ = ["temporal_warm_start_from_prev"]

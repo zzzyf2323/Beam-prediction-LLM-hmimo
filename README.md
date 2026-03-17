@@ -1,90 +1,83 @@
 <div align="center">
 
-  <h2><b>  Beam Prediction based on Large Language Models </b></h2>
+  <h2><b>HMIMO Research Codebase (FPWS + Operator-Form Recovery)</b></h2>
 </div>
 
-<div align="center">
+## HMIMO overview (current repository status)
+This repository now includes an HMIMO-focused pipeline with reproducible static and dynamic experiments:
 
+1. **Static HMIMO benchmark** (FPWS vs DFT probing; Group-LASSO and Group-SBL).  
+2. **Dynamic HMIMO baseline benchmark** (non-LLM temporal warm-start).  
+3. **Dynamic HMIMO LLM-prior benchmark** (LLM-assisted temporal prior).  
+4. **Dynamic HMIMO LLM ablation benchmark** (controlled prior-input ablations).  
+5. **Paper export scripts** for figures and compact tables.
 
+> Important: the LLM path is **prior-only**. The final channel estimator remains **Group-SBL** (or Group-LASSO in non-LLM runs). The physical HMIMO operator backbone is preserved.
 
-</div>
+## Main runnable scripts
+- `scripts/hmimo_eval_static.py`: static Monte Carlo benchmark.
+- `scripts/hmimo_eval_dynamic.py`: dynamic non-LLM temporal baseline benchmark.
+- `scripts/hmimo_eval_dynamic_llm.py`: dynamic benchmark with no-temporal / non-LLM / LLM-prior Group-SBL.
+- `scripts/hmimo_ablate_dynamic_llm.py`: controlled dynamic LLM-prior ablations.
+- `scripts/hmimo_export_paper_figures.py`: exports paper-style PNG/PDF figures from JSON outputs.
+- `scripts/hmimo_export_paper_tables.py`: exports compact paper-style CSV tables from JSON outputs.
 
-
-
-Y. Sheng, K. Huang, L. Liang, P. Liu, S. Jin, and G. Y. Li, "[Beam prediction based on large language models][link2letter]," IEEE Wireless Communications Letters, vol. 14, no. 5, pp. 1406-1410, May 2025.
-
-
-## Introduction
-This project is for the simulation in the paper "[Beam Prediction based on Large Language Models][link2letter]". In this paper, we use large language models (LLMs) to develop a high-performing and robust beam prediction method. We formulate the millimeter wave (mmWave) beam prediction problem as a time series forecasting task, where the historical observations are aggregated through cross-variable attention and then transformed into text-based representations using a trainable tokenizer. By leveraging the prompt-as-prefix (PaP) technique for contextual enrichment, our method harnesses the power of LLMs to predict future optimal beams. 
-
-[link2letter]:<https://ieeexplore.ieee.org/document/10892257>
-
-
-## Requirements
-- accelerate==0.20.3
-- einops==0.7.0
-- matplotlib==3.7.0
-- numpy==1.23.5
-- pandas==1.5.3
-- scikit_learn==1.2.2
-- scipy==1.5.4
-- torch==2.0.1
-- tqdm==4.65.0
-- peft==0.4.0
-- transformers==4.31.0
-- deepspeed==0.13.0
-
-To install all dependencies:
-```
+## Minimal quickstart
+Install dependencies:
+```bash
 pip install -r requirements.txt
 ```
 
-## Datasets
-1. Install DeepMIMO package from pip by
-```
-pip install DeepMIMO
-```
-2. Select and download a scenario from the [[scenarios page]](https://www.deepmimo.net/scenarios/). Then extract scenario folder into `./deepmimo_generate_data/scenarios`.
-
-3. Generate the dataset through running `./deepmimo_generate_data/gen_training_data.py`. Then put the generated dataset into `./dataset/`.
-
-## Train your model
-1. You can download the [[GPT2-large]](https://huggingface.co/openai-community/gpt2-large) from Hugging Face. Then put the model into `./gpt2-large`.
-2. Tune the model. We provide an experiment script for training the model.
+Run static benchmark:
 ```bash
-bash ./scripts/LLM_BP.sh 
+python scripts/hmimo_eval_static.py \
+  --config configs/hmimo_static_small.yaml \
+  --output-dir outputs/static_small
 ```
-Arguments Explanation:
-- `checkpoints` : str type, indicating the file path where the checkpoint is saved.
-- `speeds` : int type, indicating the speed values for the dataset used during training.
-- `num_antenna`: int type, indicating the number of antennas in the dataset for training.
-## Test your model
-We provide an experiment script for testing the model.
+
+Run dynamic non-LLM benchmark:
 ```bash
-bash ./scripts/LLM_BP_test.sh 
+python scripts/hmimo_eval_dynamic.py \
+  --config configs/hmimo_dynamic_small.yaml \
+  --output-dir outputs/dynamic_small
 ```
-Arguments Explanation:
-- `root_path` : str type, indicating the file path where the dataset for testing is saved.
 
-
-## Acknowledgement
-Our implementation adapts [OFA (GPT4TS)](https://github.com/DAMO-DI-ML/NeurIPS2023-One-Fits-All) as the code base and have extensively modified it to our purposes. We thank the authors for sharing their implementations and related resources.
-
----
->
-> 🙋 Please let us know if you find out a mistake or have any suggestions!
-> 
-> 🌟 If you find this resource helpful, please consider to star this repository and cite our research:
-
+Run dynamic LLM-prior benchmark:
+```bash
+python scripts/hmimo_eval_dynamic_llm.py \
+  --config configs/hmimo_dynamic_llm_small.yaml \
+  --output-dir outputs/dynamic_llm_small
 ```
-@article{sheng2025beam,
-  title={Beam prediction based on large language models},
-  author={Sheng, Yucheng and Huang, Kai and Liang, Le and Liu, Peng and Jin, Shi and Li, Geoffrey Ye},
-  journal={IEEE Wireless Communications Letters},
-  year={2025}
-  month={May}
-  volume={14}
-  number={5}
-  pages={1406-1410}
-}
+
+Run dynamic LLM ablation benchmark:
+```bash
+python scripts/hmimo_ablate_dynamic_llm.py \
+  --config configs/hmimo_dynamic_llm_ablation_small.yaml \
+  --output-dir outputs/dynamic_llm_ablation_small
 ```
+
+Export paper figures and tables:
+```bash
+python scripts/hmimo_export_paper_figures.py \
+  --static-json outputs/static_small/hmimo_static_results.json \
+  --dynamic-json outputs/dynamic_small/hmimo_dynamic_results.json \
+  --dynamic-llm-json outputs/dynamic_llm_small/hmimo_dynamic_llm_results.json \
+  --ablation-json outputs/dynamic_llm_ablation_small/hmimo_dynamic_llm_ablation_results.json \
+  --output-root outputs
+
+python scripts/hmimo_export_paper_tables.py \
+  --static-json outputs/static_small/hmimo_static_results.json \
+  --dynamic-json outputs/dynamic_small/hmimo_dynamic_results.json \
+  --dynamic-llm-json outputs/dynamic_llm_small/hmimo_dynamic_llm_results.json \
+  --ablation-json outputs/dynamic_llm_ablation_small/hmimo_dynamic_llm_ablation_results.json \
+  --output-root outputs
+```
+
+## Reproducibility and experiment docs
+- `docs/reproducibility.md`
+- `docs/experiment_map.md`
+- `docs/results_inventory.md`
+- `configs/README.md`
+
+## Legacy note
+Original beam-prediction assets and scripts are retained in this repository for archival/reference continuity.

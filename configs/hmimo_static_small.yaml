@@ -1,0 +1,31 @@
+seed: 42
+n_mc: 3
+snr_db_list: [0.0, 10.0]
+
+channel:
+  seed: 42
+  rx_dims: [2, 2]
+  tx_dims: [2, 2]
+  d_over_lambda: 0.5
+  n_clusters: 2
+  cluster_spread: 0.9
+
+probing:
+  n_slots: 4
+  n_rx_rf: 1
+  n_tx_rf: 1
+  no_repeat: true
+
+grouping:
+  rx_block_shape: [1, 1]
+  tx_block_shape: [1, 1]
+
+group_lasso:
+  lam: 0.01
+  max_iter: 60
+  tol: 1.0e-7
+
+group_sbl:
+  max_iter: 25
+  tol: 1.0e-6
+  damping: 0.4
