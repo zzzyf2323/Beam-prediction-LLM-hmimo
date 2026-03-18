@@ -1,4 +1,4 @@
-# demo_compare_beamforming_mechanisms_dft_strictAligned.py
+# demo_compare_beamforming_mechanisms.py
 # ------------------------------------------------------------
 # Compare "OURS" (wavenumber selection sensing) vs "TRAD" (DFT codebook sweep)
 # under:
